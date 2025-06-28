@@ -17,7 +17,8 @@
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./test/jest-e2e.json"
+    "test:e2e": "jest --config ./test/jest-e2e.json",
+    "cli:command": "ts-node src/cli"
   },
   "dependencies": {
     "@nestjs/common": "^11.0.1",
@@ -25,13 +26,17 @@
     "@nestjs/core": "^11.0.1",
     "@nestjs/mapped-types": "*",
     "@nestjs/platform-express": "^11.0.1",
+    "@nestjs/sequelize": "^11.0.0",
     "@types/sequelize": "^4.28.20",
+    "nest-commander": "^3.17.0",
     "pg": "^8.16.2",
     "pg-hstore": "^2.3.4",
+    "pgvector": "^0.2.1",
     "reflect-metadata": "^0.2.2",
     "rxjs": "^7.8.1",
     "sequelize": "^6.37.7",
-    "sequelize-typescript": "^2.1.6"
+    "sequelize-typescript": "^2.1.6",
+    "umzug": "^3.8.2"
   },
   "devDependencies": {
     "@eslint/eslintrc": "^3.2.0",
