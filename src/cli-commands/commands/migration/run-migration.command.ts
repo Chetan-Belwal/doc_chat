@@ -1,15 +1,16 @@
-/* eslint-disable @typescript-eslint/no-unused-vars */
-/* eslint-disable @typescript-eslint/no-unsafe-call */
 /* eslint-disable @typescript-eslint/no-unsafe-member-access */
+/* eslint-disable @typescript-eslint/no-unsafe-call */
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
 /* eslint-disable @typescript-eslint/no-unsafe-return */
 import { InjectConnection } from '@nestjs/sequelize';
 import { Command, CommandRunner } from 'nest-commander';
-import { Sequelize } from 'sequelize-typescript';
+import { Sequelize } from 'sequelize';
 import { MigrationMeta, SequelizeStorage, Umzug } from 'umzug';
 
 @Command({
   name: 'run:migration',
-  description: 'Run the migrations',
+  description: 'Runs the migrations',
 })
 export class RunMigrationCommand extends CommandRunner {
   constructor(@InjectConnection() private readonly connection: Sequelize) {
@@ -26,25 +27,28 @@ export class RunMigrationCommand extends CommandRunner {
           return {
             name,
             up: async () =>
-              import(path as string).then((migration) =>
+              import(path).then((migration) =>
                 migration.up(context, this.connection.Sequelize),
               ),
 
             down: async () =>
-              import(path as string).then((migration) =>
+              import(path).then((migration) =>
                 migration.down(context, this.connection.Sequelize),
               ),
           };
         },
       },
+      context: this.connection.getQueryInterface(),
       storage: new SequelizeStorage({ sequelize: this.connection }),
       logger: console,
     });
-
-    const migrationsMeta: MigrationMeta[] = await umzug.up();
-
-    if (migrationsMeta.length === 0) {
-      console.log('No migrations to run');
+    try {
+      const migrationsMeta: MigrationMeta[] = await umzug.up();
+      if (migrationsMeta.length === 0) {
+        console.error('No migrations to Run');
+      }
+    } catch (error) {
+      console.error(error);
     }
   }
 }

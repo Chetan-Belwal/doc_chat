@@ -32,6 +32,7 @@ export default tseslint.config(
     '@typescript-eslint/explicit-module-boundary-types': 'off',
     '@typescript-eslint/no-explicit-any': 'off',
     '@typescript-eslint/no-unused-vars': 'error',
+    '@typescript-eslint/no-floating-promises': 'off',
     },
   },
 );

@@ -4,6 +4,7 @@ import {
   SequelizeModuleOptions,
   SequelizeOptionsFactory,
 } from '@nestjs/sequelize';
+import { modelCollection } from '../models-collection';
 
 @Injectable()
 export class DatabaseConfigService implements SequelizeOptionsFactory {
@@ -13,7 +14,9 @@ export class DatabaseConfigService implements SequelizeOptionsFactory {
   ): Promise<SequelizeModuleOptions> | SequelizeModuleOptions {
     const config = this.configService.get<SequelizeModuleOptions>(
       `databases.${connectionName}`,
-    ) as SequelizeModuleOptions;
+    );
+
+    config.models = modelCollection;
 
     return config;
   }
