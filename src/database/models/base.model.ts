@@ -2,6 +2,7 @@ import {
   AutoIncrement,
   Column,
   CreatedAt,
+  DataType,
   Model,
   PrimaryKey,
   UpdatedAt,
@@ -14,8 +15,10 @@ export class BaseModel<T> extends Model<T> {
   declare public id: number;
 
   @CreatedAt
-  declare public created_at: Date;
+  @Column(DataType.DATE)
+  public created_at: Date;
 
   @UpdatedAt
-  declare public updated_at: Date;
+  @Column(DataType.DATE)
+  public updated_at: Date;
 }

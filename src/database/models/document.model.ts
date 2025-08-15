@@ -1,10 +1,11 @@
-import { Column } from 'sequelize-typescript';
+import { Column, Table } from 'sequelize-typescript';
 import { BaseModel } from './base.model';
 
+@Table({ tableName: 'documents' })
 export class DocumentModel extends BaseModel<DocumentModel> {
   @Column
-  name: string;
+  public name: string;
 
   @Column
-  path: string;
+  public path: string;
 }

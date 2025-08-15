@@ -1,17 +1,8 @@
-import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
-import { LangchainService } from './langchain/langchain.service';
+import { Controller, Get, Redirect } from '@nestjs/common';
 
 @Controller()
 export class AppController {
-  constructor(
-    private readonly appService: AppService,
-    private langchainService: LangchainService,
-  ) {}
-
+  @Redirect('/dashboard')
   @Get()
-  getHello(): string {
-    this.langchainService.generateEmbeddings('hello');
-    return this.appService.getHello();
-  }
+  async getHello() {}
 }

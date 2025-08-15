@@ -1,4 +1,9 @@
 import { BaseModel } from '../models/base.model';
+import { DocumentEmbeddingModel } from '../models/document-embedding.model';
 import { DocumentModel } from '../models/document.model';
 
-export const modelCollection = [BaseModel, DocumentModel];
+export const modelsCollection = [
+  BaseModel,
+  DocumentModel,
+  DocumentEmbeddingModel,
+];

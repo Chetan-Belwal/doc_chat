@@ -26,12 +26,12 @@ module.exports = {
         type: DataType.BIGINT,
         allowNull: false,
       },
-      createdAt: {
+      created_at: {
         type: DataType.DATE,
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),
       },
-      updatedAt: {
+      updated_at: {
         type: DataType.DATE,
         allowNull: false,
         defaultValue: Sequelize.literal('CURRENT_TIMESTAMP'),

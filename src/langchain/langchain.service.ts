@@ -4,6 +4,7 @@ import { Injectable, OnModuleInit } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { OllamaEmbeddingConfig } from '../environment/interfaces/langchainModel';
 import { createReadStream } from 'node:fs';
+import * as pdfParser from 'pdf-parse';
 
 @Injectable()
 export class LangchainService implements OnModuleInit {
@@ -36,32 +37,40 @@ export class LangchainService implements OnModuleInit {
   ): Promise<number[]> {
     const readFileStream = createReadStream(path);
 
-    const vector: number[] = [];
+    const chunks = [];
 
     await new Promise((res, rej) => {
       readFileStream
-        .on('data', async (chunk) => {
-          const embedding: number[] = await this.#embeddingModel.embedQuery(
-            chunk.toString(),
-          );
-
-          vector.push(...embedding);
+        .on('data', (chunk) => {
+          chunks.push(chunk);
         })
         .on('end', () => {
-          res(vector);
+          res(0);
         })
         .on('error', (err) => {
           rej(err);
         });
     });
 
+    const content = Buffer.concat(chunks);
+
+    const pdfContent = await pdfParser(content);
+
+    console.log(pdfContent);
+
+    const vectorEmbedding: number[] = await this.#embeddingModel.embedQuery(
+      pdfContent.text,
+    );
+
     if (normalize) {
       // Euclidean norm
-      const norm = Math.sqrt(vector.reduce((x, y) => x + y ** 2, 0));
+      const norm = Math.sqrt(vectorEmbedding.reduce((x, y) => x + y ** 2, 0));
 
-      return norm > 0 ? vector.map((val) => val / norm) : vector;
+      return norm > 0
+        ? vectorEmbedding.map((val) => val / norm)
+        : vectorEmbedding;
     }
 
-    return vector;
+    return vectorEmbedding;
   }
 }

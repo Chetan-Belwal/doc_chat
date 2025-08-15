@@ -3,7 +3,7 @@ import { DatabaseConfigService } from './services/database-config/database-confi
 import { SequelizeModule } from '@nestjs/sequelize';
 import { DbConnectionNames } from '../common/enums/DbConnectionNames';
 import { ConfigModule } from '@nestjs/config';
-import { modelCollection } from './services/models-collection';
+import { modelsCollection } from './services/models-collection';
 
 @Global()
 @Module({
@@ -14,8 +14,9 @@ import { modelCollection } from './services/models-collection';
       inject: [ConfigModule],
     }),
 
-    SequelizeModule.forFeature(modelCollection),
+    SequelizeModule.forFeature(modelsCollection),
   ],
   providers: [DatabaseConfigService],
+  exports: [SequelizeModule],
 })
 export class DatabaseModule {}
